@@ -1,0 +1,168 @@
+a:hover, a:active, a:focus {
+    text-decoration: none;
+}
+
+.mainComponent, .subComponent{
+	background-color: #007ACC; 
+	color: white;
+}
+
+.centerAndMiddle{
+	text-align: center;
+	vertical-align: middle;
+}
+
+.leftAndMiddle{
+	text-align: left;
+	vertical-align: middle;
+}
+
+.rightAndMiddle{
+	text-align: right;
+	vertical-align: middle;
+}
+
+.ToHidden{
+	visibility: hidden;
+}
+
+.colorToWhite{
+	color: white;
+}
+
+.colorToWarning{
+	color: #F0AD4E;
+}
+
+.paddingToZero{
+	padding:0px;
+}
+
+.paddingBottomTo7{
+	padding-bottom: 7px;
+}
+
+.paddingTo10{
+	padding:10px;
+}
+
+.backgroundColorToWhite{
+	background-color: white;
+}
+
+.marginTopTo20{
+	margin-top:20px;
+}
+
+.logoImgSize{
+	width:100px;
+	height:90px;
+}
+
+.signImgSize{
+	width: 90px;
+    height: 40px;
+	vertical-align: bottom;
+}
+
+.middleHelperSpan {
+	display: inline-block;
+    height: 180px;
+    vertical-align: middle;
+}
+
+/* small screen */
+@media (max-width: 1024px) {
+	.logoImgSize{
+		width:60px;
+		height:51px;
+		margin-left: -52px;
+	}
+	.signImgSize{
+		width: 55px;
+		height: 25px;
+		vertical-align: bottom;
+	}
+
+	.nav.navbar-nav.slide-in{
+		border-style: solid;
+		border-left: none;
+	}
+}
+
+.fontXXLarge{
+	font-size: xx-large;
+}
+
+.fontXLarge{
+	font-size: x-large;
+}
+
+.fontLarge{
+	font-size: large;
+}
+
+.fontMiddle{
+	font-size: middle;
+}
+
+.noBorderRadius{
+	border-radius: 0px;
+}
+
+.mainYellowBtn{
+	width: 85px;
+    border-radius: 0px;
+}
+
+.noBorder{
+	border: none;
+}
+
+/*---------- Plain P-Panel ------------*/
+:host /deep/ .plainPPanel{
+	margin-top: 0.1px;
+	border: none;
+	padding: 0px;
+}
+
+:host /deep/ .plainPPanel .ui-panel-titlebar{
+	display: none;
+}
+
+:host /deep/ .plainPPanel .ui-panel-content-wrapper, 
+:host /deep/ .plainPPanel .ui-panel-content-wrapper .ui-panel-content {
+	padding: 0px;
+	border: none;
+}
+
+/*---------- Block UI ------------*/
+:host /deep/ .ui-blockui{
+    background: url(http://i66.tinypic.com/igez5u.gif), #1f2226;
+    background-size: 50px 50px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/*---------- Datatable ------------*/
+:host /deep/ .ui-datatable, 
+:host /deep/ .ui-datatable .ui-widget-content,
+:host /deep/ ui-datatable-data, 
+:host /deep/ .ui-datatable td, 
+:host /deep/ .ui-datatable th, 
+:host /deep/ .ui-datatable tr{
+	border: none;
+	background-color: #007ACC;
+    color: white;
+	text-align: center;
+	vertical-align: middle;
+}
+
+:host /deep/ .ui-datatable th{
+	font-size: x-large;
+}
+
+:host /deep/ .ui-datatable .ui-column-title{
+	font-weight: bold;
+}
+

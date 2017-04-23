@@ -1,0 +1,64 @@
+{
+  "MAIN": {
+    "HK_RAIN": "香港雨"
+  },
+  "MENU": {
+    "HOME": "首頁",
+    "ENG": "ENG",
+    "ZH": "繁",
+    "9DAY_WEATHER_FORECAST": "九天天氣預報",
+    "SETTING": "設定",
+    "EMPTY": "Empty",
+    "ABOUT": "關於",
+    "FEEDBACK": "回饋"
+  },
+  "AB": {
+    "P1": "籌備下周以至下年的戶外活動，想知道當天下雨的機率嗎？",
+    "P2": "沒問題！我們透過分析自1900年至今的香港天文台天氣數據，計算並預測未來2年的雨量、溫度和濕度！",
+    "P3": "預測結果可以幫助你決定戶外活動的日子，避免下雨。不要猶疑，立即去嘗試吧！",
+	  "P4": "(以上預測並非精密科學，結果僅供參考。)"
+  },
+  "CW": {
+    "WILL_IT_RAIN": "會下雨嗎?",
+    "YEAR": "年",
+    "MONTH": "月",
+    "DAY": "日",
+    "GO": "去",
+    "BACK": "返回",
+    "MORE": "更多",
+    "LESS": "較少",
+    "RAINFALL": "雨量",
+    "RAIN_INTENSITY": "雨勢",
+    "RECENT": " - 近",
+    "YEARS_OF_DATA": "年數據",
+    "WILL_RAIN": "會下雨!",
+    "WILL_SHINE": "會有陽光!",
+    "TEMPERATURE": "溫度",
+    "HUMIDITY": "濕度",
+    "DRIZZLE": "毛毛雨",
+    "LIGHT_RAIN": "小雨",
+    "MODERATE_RAIN": "中雨",
+    "HEAVY_RAIN": "大雨",
+    "VIOLENT_RAIN": "暴雨",
+    "Torrential_rain": "大暴雨",
+    "FORECASR_EXPLAIN": "九天內的天氣預報均取自香港天文台"
+  },
+  "WF": {
+    "9DAY_WEATHER_FORECAST": "九天天氣預報",
+    "HKO_PROVIDED": "以下數據均取自香港天文台",
+    "YEAR": "年",
+    "MONTH": "月",
+    "DAY": "日",
+    "GO": "去",
+    "BACK": "返回"
+  },
+  "SET": {
+    "YEARS_OF_DATA_TO_USE": "利用數據的年數"
+  },
+  "FB": {
+    "NAME": "名",
+    "EMAIL": "Email (可不填)",
+    "COMMENT": "建議",
+    "SUBMIT": "遞交"
+  }
+}

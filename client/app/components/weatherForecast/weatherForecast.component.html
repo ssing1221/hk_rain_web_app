@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="mainComponent fade-in one">
+            <div class="paddingTo10">
+                <div class="form-group">
+                    <p class="fontXXLarge"><strong>{{'WF.9DAY_WEATHER_FORECAST' | translate}}</strong></p>
+                    <p class="fontXLarge colorToWarning"><strong>{{'WF.HKO_PROVIDED' | translate}}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngFor="let forecast of forecastList; let i=index" >
+        <div class="ui-g-12 ui-md-6 ui-lg-4">
+            <div class="subComponent fade-in " [ngClass]="{'two': [0,1,2].indexOf(i) > -1, 
+                    'three': [3,4,5].indexOf(i) > -1, 'four': [6,7,8].indexOf(i) > -1}" style="height: 200px;" >
+                <div class="paddingTo10">
+                    <p *ngIf="langInd === GCONSTANTS.LANG_EN" class="fontLarge"><strong>{{forecast.day}} {{monthMap[forecast.month]}} ( {{weekDayEnMap[forecast.weekDay]}} ) </strong></p>
+                    <p *ngIf="langInd === GCONSTANTS.LANG_ZH" class="fontLarge"><strong>{{forecast.month}} {{'WF.MONTH' | translate}} {{forecast.day}} {{'WF.DAY' | translate}} ( {{weekDayZhMap[forecast.weekDay]}} )</strong></p>
+                    <p class="fontLarge"><strong>{{forecast.temp}}</strong></p>
+                    <p *ngIf="langInd === GCONSTANTS.LANG_EN" class="fontLarge"><strong>{{forecast.desc_en}}</strong></p>
+                    <p *ngIf="langInd === GCONSTANTS.LANG_ZH" class="fontLarge"><strong>{{forecast.desc_zh}}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="langIndBtn" (click)="changeLangInd()" class="btn ToHidden"></button>

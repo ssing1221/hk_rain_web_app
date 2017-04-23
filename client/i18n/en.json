@@ -1,0 +1,64 @@
+{
+  "MAIN": {
+    "HK_RAIN": "HK Rain"
+  },
+  "MENU": {
+    "HOME": "Home",
+    "ENG": "ENG",
+    "ZH": "繁",
+    "9DAY_WEATHER_FORECAST": "9-day Weather Forecast",
+    "SETTING": "Setting",
+    "EMPTY": "Empty",
+    "ABOUT": "About",
+    "FEEDBACK": "Feedback"
+  },  
+  "AB": {
+    "P1": "Planning for an outdoor activity but worry about the weather? Do you want to know the possibility of rain on a particular day?",
+    "P2": "No problem! Our app can provide you reference information and prediction of rain, temperature and humidity in the future two years by analyzing the past weather data from Hong Kong Observatory since 1900.",
+    "P3": "The prediction help you decide the outdoor activity date and avoid the rain. Try it out right now!",
+	  "P4": "(The prediction is for reference only)"
+  },
+  "CW": {
+    "WILL_IT_RAIN": "Will It Rain?",
+    "YEAR": "Year",
+    "MONTH": "Month",
+    "DAY": "Day",
+    "GO": "Go",
+    "BACK": "Back",
+    "MORE": "More",
+    "LESS": "Less",
+    "RAINFALL": "Rainfall",
+    "RAIN_INTENSITY": "Rain intensity",
+    "RECENT": " - Recent",
+    "YEARS_OF_DATA": "years of data",
+    "WILL_RAIN": "will Rain!",
+    "WILL_SHINE": "will Shine!",
+    "TEMPERATURE": "Temperature",
+    "HUMIDITY": "Humidity",
+    "DRIZZLE": "Drizzle",
+    "LIGHT_RAIN": "Light rain",
+    "MODERATE_RAIN": "Moderate rain",
+    "HEAVY_RAIN": "Heavy rain",
+    "VIOLENT_RAIN": "Violent rain",
+    "Torrential_rain": "Torrential rain",
+    "FORECASR_EXPLAIN": "The data of 9-day weather forecast comes from Hong Kong Observatory"
+  },
+  "WF": {
+    "9DAY_WEATHER_FORECAST": "9-day Weather Forecast",
+    "HKO_PROVIDED": "Below data come from Hong Kong Observatory",
+    "YEAR": "Year",
+    "MONTH": "Month",
+    "DAY": "Day",
+    "GO": "Go",
+    "BACK": "Back"
+  },
+  "SET": {
+    "YEARS_OF_DATA_TO_USE": "Years of data to use"
+  },
+  "FB": {
+    "NAME": "Name",
+    "EMAIL": "Email (Optional)",
+    "COMMENT": "Comment",
+    "SUBMIT": "Submit"
+  }
+}

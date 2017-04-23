@@ -1,0 +1,72 @@
+<div class="row">
+    <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="mainComponent">
+            <div class="paddingTo10">
+                <p-messages [value]="msgs"></p-messages>
+                
+                <form id="adminForm" *ngIf="!showDtl" class="form-horizontal" (ngSubmit)="login()">
+                    <div class="form-group">
+                        <p class="fontXXLarge"><strong>Admin</strong></p>
+                    </div>
+                    <div class="form-group">
+                        <input id="name" name="name" placeholder="Name" type="text" size="30" style="color: black;"
+                                pInputText [(ngModel)]="admin.name" />
+                    </div>
+                    <div class="form-group">
+                        <input id="pwd" name="pwd" placeholder="Password" type="password" size="30" style="color: black;" 
+                                pInputText [(ngModel)]="admin.pwd" />
+                    </div>
+                    <div class="form-group">
+                            <button type="submit" class="btn btn-warning btn-lg mainYellowBtn" 
+                                [disabled]="admin.name === null || admin.pwd === null">Login</button>
+                    </div>
+                </form>
+                <div *ngIf="showDtl" class="form-group">
+                    <div class="form-group">
+                        <p-tabView (onChange)="handleChange($event)">
+                            <p-tabPanel header="Forecast">
+                                <form id="allForecast" (ngSubmit)="createForecast()">
+                                    <p-dataTable [value]="forecastList" [rows]="18" [paginator]="true" [pageLinks]="5" >
+                                        <p-column field="month" header="Month"></p-column>
+                                        <p-column field="day" header="Day"></p-column>
+                                        <p-column field="temp" header="Temp"></p-column>
+                                        <p-column field="desc_en" header="Desc EN"></p-column>
+                                        <p-column field="desc_zh" header="Desc ZH"></p-column>
+                                    </p-dataTable>
+                                    <button type="submit" class="btn btn-warning btn-lg">Create/Update</button>
+                                    <button class="btn btn-warning btn-lg" (click)="checkWeather();" >Check Weather</button>
+                                </form>
+                            </p-tabPanel>
+                            
+                            <p-tabPanel header="All Weather">
+                                <form id="allWeather" (ngSubmit)="createWeather()">
+                                    <p-dataTable [value]="weatherList" [rows]="25" [paginator]="true" [pageLinks]="10" >
+                                        <p-column field="year" header="Year"></p-column>
+                                        <p-column field="month" header="Month"></p-column>
+                                        <p-column field="day" header="Day"></p-column>
+                                        <p-column field="temp" header="Temp"></p-column>
+                                        <p-column field="humidity" header="Humidity"></p-column>
+                                        <p-column field="cloud" header="Cloud"></p-column>
+                                        <p-column field="rainfall" header="Rainfall"></p-column>
+                                        <p-column field="sunshine" header="Sunshine"></p-column>
+                                    </p-dataTable>
+                                    <button type="submit" class="btn btn-warning btn-lg">Create/Update</button>
+                                </form>
+                            </p-tabPanel>
+                            <p-tabPanel header="All Feedback">
+                                <form id="allFeedback" >
+                                    <p-dataTable [value]="feedbackList" [rows]="25" [paginator]="true" [pageLinks]="10" >
+                                        <p-column field="name" header="Name"></p-column>
+                                        <p-column field="email" header="Email"></p-column>
+                                        <p-column field="submitDate" header="Date"></p-column>
+                                        <p-column field="comment" header="Comment"></p-column>
+                                    </p-dataTable>
+                                </form>
+                            </p-tabPanel>
+                        </p-tabView>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

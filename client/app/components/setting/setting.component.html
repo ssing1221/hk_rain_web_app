@@ -1,0 +1,28 @@
+<p-growl [value]="msgs"></p-growl>
+<div class="row">
+    <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="mainComponent fade-in one">
+            <div class="paddingTo10">
+                <div class="form-group">
+                    <p class="fontXXLarge"><strong>{{'MENU.SETTING' | translate}}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="subComponent fade-in two" style="height: 400px;">		
+		   <form class="form-horizontal">	
+				<div class="form-group">
+					<label class="control-label ui-g-3 rightAndMiddle fontLarge paddingBottomTo7" style="margin-top: 4px;">{{ 'SET.YEARS_OF_DATA_TO_USE' | translate }}</label>
+					<div class="ui-g-2 centerAndMiddle">
+						<select id="filterYear" name="filterYear" class="form-control noBorderRadius noBorder" 
+								[(ngModel)]="selectedFilterYear" (ngModelChange)="changeFilterYear()">
+							<option *ngFor="let year of selectFilterYearList" [ngValue]="year.value">{{year.label}}</option>
+						</select>
+					</div>
+				</div>  
+			</form>		
+        </div>
+    </div>
+</div>

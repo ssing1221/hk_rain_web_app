@@ -1,0 +1,41 @@
+<html>
+
+<head>
+  <script>document.write('<base href="' + document.location + '" />');</script>
+  <title>HK Rain (beta)</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+
+  <link rel="stylesheet" type="text/css" href="libs/primeng/resources/themes/omega/theme.css" />
+  <link rel="stylesheet" type="text/css" href="libs/primeng/resources/primeng.min.css" />
+
+  <!-- 1. Load libraries -->
+  <!-- Polyfill(s) for older browsers -->
+  <script src="libs/core-js/client/shim.min.js"></script>
+  <script src="libs/zone.js/dist/zone.js"></script>
+  <script src="libs/reflect-metadata/Reflect.js"></script>
+  <script src="libs/systemjs/dist/system.src.js"></script>
+
+  <!-- 2. Configure SystemJS -->
+  <script src="systemjs.config.js"></script>
+  <script>
+          System.import('app')
+      .catch(console.error.bind(console));
+    </script>
+</head>
+
+<!-- 3. Display the application -->
+
+<body>
+    <my-app>
+        <img src="http://i66.tinypic.com/igez5u.gif" 
+            style="display: block; margin: 30 auto 0 auto; width:100px; height: 100px;"
+            alt="Responsive image"> 
+        <p  style="text-align: center;"> loading...   </p>
+    </my-app>
+</body>
+</html>

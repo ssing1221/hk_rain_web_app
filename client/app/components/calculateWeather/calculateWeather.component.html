@@ -1,0 +1,279 @@
+<p-growl [value]="msgs"></p-growl>
+<div class="row">
+    <div id="calDiv1" class="ui-g-12 ui-md-9 ui-lg-9">
+        <p-blockUI [target]="calPanel" [blocked]="blockedCalPanel"></p-blockUI>
+        <p-panel #calPanel styleClass="plainPPanel" [style]="{'margin-top':'0.1px'}">
+            <div class="mainComponent fade-in one">
+                <div class="paddingTo10">
+                    <form id="calInputForm" *ngIf="!showResult && !showForecast" [@fadeInOut]="!showResult && !showForecast" class="form-horizontal" (ngSubmit)="calWeather()">
+                        <div class="form-group">
+                            <p class="fontXXLarge"><strong>{{ 'CW.WILL_IT_RAIN' | translate }}</strong></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2 centerAndMiddle fontLarge paddingBottomTo7" for="year">{{ 'CW.YEAR' | translate }}</label>
+                            <div class="col-sm-10 centerAndMiddle">
+                                <select id="year" name="year" class="form-control noBorderRadius noBorder" [(ngModel)]="selectedYear" (ngModelChange)="yearChange()">
+                                    <option *ngFor="let year of selectYearList" [ngValue]="year.value">{{year.label}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2 centerAndMiddle fontLarge paddingBottomTo7" for="month">{{ 'CW.MONTH' | translate }}</label>
+                            <div class="col-sm-10 centerAndMiddle">
+                                <select id="month" name="month" class="form-control noBorderRadius noBorder" [(ngModel)]="selectedMonth" (ngModelChange)="monthChange()">
+                                    <option *ngFor="let month of selectMonthList" [ngValue]="month.value">{{month.label}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-2 centerAndMiddle fontLarge paddingBottomTo7" for="day">{{ 'CW.DAY' | translate }}</label>
+                            <div class="col-sm-10 centerAndMiddle">
+                                <select id="day" name="day" class="form-control noBorderRadius noBorder" [(ngModel)]="selectedDay" (ngModelChange)="dayChange()" [disabled]="dayDisable">
+                                    <option *ngFor="let day of selectDayList" [ngValue]="day.value">{{day.label}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-warning btn-lg mainYellowBtn" [disabled]="selectedYear == null || selectedMonth == null || selectedDay == null">{{ 'CW.GO' | translate }}</button>
+                        </div>
+                    </form>
+
+                    <form id="calResultForm" class="form-horizontal">
+                        <div *ngIf="showForecast" [@fadeInOut]="showForecast" class="paddingTo10">
+                            <p class="fontLarge colorToWarning"><strong>{{'CW.FORECASR_EXPLAIN' | translate}}</strong></p>
+                            <p *ngIf="langInd === GCONSTANTS.LANG_EN" class="fontLarge"><strong>{{forecast.day}} {{monthMap[forecast.month]}} ( {{weekDayEnMap[forecast.weekDay]}} ) </strong></p>
+                            <p *ngIf="langInd === GCONSTANTS.LANG_ZH" class="fontLarge"><strong>{{forecast.month}} {{'CW.MONTH' | translate}} {{forecast.day}} {{'CW.DAY' | translate}} ( {{weekDayZhMap[forecast.weekDay]}} )</strong></p>
+                            <hr style="border-top: 3px solid #eee; margin-top: 0px;" />
+                            <p class="fontLarge"><strong>{{forecast.temp}}</strong></p>
+                            <p *ngIf="langInd === GCONSTANTS.LANG_EN" class="fontLarge"><strong>{{forecast.desc_en}}</strong></p>
+                            <p *ngIf="langInd === GCONSTANTS.LANG_ZH" class="fontLarge"><strong>{{forecast.desc_zh}}</strong></p>
+                            <button type="submit" class="btn btn-warning btn-lg mainYellowBtn" (click)="fromForecastToCal();">{{ 'CW.BACK' | translate }}</button>
+                        </div>
+                        <div *ngIf="showResult" [@fadeInOut]="showResult" class="ui-g">
+                            <div class="ui-g-12 centerAndMiddle">
+                                <label *ngIf="langInd === GCONSTANTS.LANG_EN" class="centerAndMiddle fontLarge paddingBottomTo7">
+                                    {{weatherResult.day}} {{monthMap[weatherResult.month]}} {{weatherResult.year}} ( {{weekDayEnMap[weatherResult.weekDay]}} )</label>
+								<label *ngIf="langInd === GCONSTANTS.LANG_EN" class="fontMiddle paddingBottomTo7" >
+                                    {{'CW.RECENT' | translate}} {{selectedFilterYear}} {{'CW.YEARS_OF_DATA' | translate}}</label>
+                                <label *ngIf="langInd === GCONSTANTS.LANG_ZH" class="centerAndMiddle fontLarge paddingBottomTo7">
+                                    {{weatherResult.year}} {{'CW.YEAR' | translate}} {{weatherResult.month}} {{'CW.MONTH' | translate}} {{weatherResult.day}} {{'CW.DAY' | translate}} ( {{weekDayZhMap[weatherResult.weekDay]}} )  </label>
+								<label *ngIf="langInd === GCONSTANTS.LANG_ZH" class="fontMiddle paddingBottomTo7" >
+                                    {{'CW.RECENT' | translate}}{{selectedFilterYear}}{{'CW.YEARS_OF_DATA' | translate}}</label>
+
+                            </div>
+                            <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                <span class="middleHelperSpan"></span>
+                                <img [src]="weatherIconPath" />
+                            </div>
+                            <div class="ui-g-12 ui-md-6 ui-lg-6">
+                                <div class="ui-g-12 ui-md-12 ui-lg-12 colorToWarning">
+                                    <p class="fontXXLarge"><strong>{{ weatherResult.rainYear | number : '1.1-1' }}% {{ 'CW.WILL_RAIN' | translate }}</strong></p>
+                                </div>
+                                <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                    <p class="fontXLarge"><strong>{{ 'CW.TEMPERATURE' | translate }} {{ weatherResult.temp | number : '1.1-1' }}°C</strong></p>
+                                </div>
+                                <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                    <p class="fontXLarge"><strong>{{ 'CW.HUMIDITY' | translate }} {{ weatherResult.humidity | number : '1.1-1' }}%</strong></p>
+                                </div>
+                            </div>
+                            
+                            <div class="ui-g-12 ui-md-12 ui-lg-12 paddingToZero">
+                                <hr style="border-top: 3px solid #eee;" />
+                            </div>
+                            
+                            <div *ngIf="weatherResult.drizzle !== 0" class="ui-g-12 ui-md-12 ui-lg-12">
+                                <p class="fontLarge" [ngClass]="{'colorToWarning': maxRainValue === weatherResult.drizzle }"><strong>{{ weatherResult.drizzle | number : '1.1-1' }}% {{ 'CW.DRIZZLE' | translate }}</strong></p>
+                            </div>
+                            <div *ngIf="weatherResult.light !== 0" class="ui-g-12 ui-md-12 ui-lg-12">
+                                <p class="fontLarge" [ngClass]="{'colorToWarning': maxRainValue === weatherResult.light }"><strong>{{ weatherResult.light | number : '1.1-1' }}% {{ 'CW.LIGHT_RAIN' | translate }}</strong></p>
+                            </div>
+                            <div *ngIf="weatherResult.moderate !== 0" class="ui-g-12 ui-md-12 ui-lg-12">
+                                <p class="fontLarge" [ngClass]="{'colorToWarning': maxRainValue === weatherResult.moderate }"><strong>{{ weatherResult.moderate | number : '1.1-1' }}% {{ 'CW.MODERATE_RAIN' | translate }}</strong></p>
+                            </div>
+                            <div *ngIf="weatherResult.heavy !== 0" class="ui-g-12 ui-md-12 ui-lg-12">
+                                <p class="fontLarge" [ngClass]="{'colorToWarning': maxRainValue === weatherResult.heavy }"><strong>{{ weatherResult.heavy | number : '1.1-1' }}% {{ 'CW.HEAVY_RAIN' | translate }}</strong></p>
+                            </div>
+                            <div *ngIf="weatherResult.violent !== 0" class="ui-g-12 ui-md-12 ui-lg-12">
+                                <p class="fontLarge" [ngClass]="{'colorToWarning': maxRainValue === weatherResult.violent }"><strong>{{ weatherResult.violent | number : '1.1-1' }}% {{ 'CW.VIOLENT_RAIN' | translate }}</strong></p>
+                            </div>
+                            <div *ngIf="weatherResult.torrential !== 0" class="ui-g-12 ui-md-12 ui-lg-12">
+                                <p class="fontLarge" [ngClass]="{'colorToWarning': maxRainValue === weatherResult.torrential }"><strong>{{ weatherResult.torrential | number : '1.1-1' }}% {{ 'CW.Torrential_rain' | translate }}</strong></p>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                <a href="javascript:void(0)" (click)="toggleMore();"> 
+                                    <p class="fontLarge colorToWhite" *ngIf="!showDtl"><strong>{{ 'CW.MORE' | translate }}  </strong><span class="glyphicon glyphicon-menu-down"></span></p>
+                                    <p class="fontLarge colorToWhite" *ngIf="showDtl"><strong>{{ 'CW.LESS' | translate }}  </strong><span class="glyphicon glyphicon-menu-up"></span></p>
+                                    
+                                </a>
+                            </div>
+
+                            <div *ngIf="showDtl" [@fadeInOut]="showDtl" class="ui-g">
+                                <div class="ui-g-12 centerAndMiddle">
+									<p class="fontLarge colorToWarning"><strong>{{'WF.HKO_PROVIDED' | translate}}</strong></p>
+                                    <p-dataTable [value]="weatherDtlList" >
+                                        <p-column field="year" header="{{ 'CW.YEAR' | translate }}"></p-column>
+                                        <p-column field="rainfallDescEN" *ngIf="langInd === GCONSTANTS.LANG_EN" header="{{ 'CW.RAIN_INTENSITY' | translate }}"></p-column>
+                                        <p-column field="rainfallDescZH" *ngIf="langInd === GCONSTANTS.LANG_ZH" header="{{ 'CW.RAIN_INTENSITY' | translate }}"></p-column>
+                                        <p-column field="rainfall" header="{{ 'CW.RAINFALL' | translate }} (mm)"></p-column>
+                                    </p-dataTable>
+                                </div>
+                            </div>
+
+                            <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                <button type="submit" class="btn btn-warning btn-lg mainYellowBtn" (click)="fromResultToCal();">{{ 'CW.BACK' | translate }}</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </p-panel>
+    </div>
+
+    <div id="calDiv2" class="ui-g-12 ui-md-3 ui-lg-3 fade-in two">
+		<p-blockUI [target]="calPanel2" [blocked]="blockedCalPanel2"></p-blockUI>
+        <p-panel #calPanel2 styleClass="plainPPanel" [style]="{'margin-top':'0.1px'}">
+			<div class="mainComponent">
+				<div class="paddingTo10">
+				   
+					<div class="centerAndMiddle" *ngIf="!showCal2 && !showForecast2" [@fadeInOut]="!showCal2 && !showForecast2" style="height: 273px;">
+						<div style="height: 45%;"></div>
+						<button class="btn btn-warning btn-lg mainYellowBtn" (click)="addCalInputForm()" >
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+					</div>
+					
+					<form id="calInputForm2" *ngIf="showCal2 && !showResult2 && !showForecast2" [@fadeInOut]="showCal2 && !showResult2 && !showForecast2" class="form-horizontal" (ngSubmit)="calWeather2()">
+						<div class="form-group">
+							<p class="fontXXLarge"><strong>{{ 'CW.WILL_IT_RAIN' | translate }}</strong></p>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-sm-2 centerAndMiddle fontLarge paddingBottomTo7" for="year2">{{ 'CW.YEAR' | translate }}</label>
+							<div class="col-sm-10 centerAndMiddle">
+								<select id="year2" name="year2" class="form-control noBorderRadius noBorder" [(ngModel)]="selectedYear2" (ngModelChange)="yearChange2()">
+									<option *ngFor="let year2 of selectYearList2" [ngValue]="year2.value">{{year2.label}}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2 centerAndMiddle fontLarge paddingBottomTo7" for="month2">{{ 'CW.MONTH' | translate }}</label>
+							<div class="col-sm-10 centerAndMiddle">
+								<select id="month2" name="month2" class="form-control noBorderRadius noBorder" [(ngModel)]="selectedMonth2" (ngModelChange)="monthChange2()">
+									<option *ngFor="let month2 of selectMonthList2" [ngValue]="month2.value">{{month2.label}}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-sm-2 centerAndMiddle fontLarge paddingBottomTo7" for="day2">{{ 'CW.DAY' | translate }}</label>
+							<div class="col-sm-10 centerAndMiddle">
+								<select id="day2" name="day2" class="form-control noBorderRadius noBorder" [(ngModel)]="selectedDay2" (ngModelChange)="dayChange2()" [disabled]="dayDisable2">
+									<option *ngFor="let day2 of selectDayList2" [ngValue]="day2.value">{{day2.label}}</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<button type="submit" class="btn btn-warning btn-lg mainYellowBtn" [disabled]="selectedYear2 == null || selectedMonth2 == null || selectedDay2 == null">{{ 'CW.GO' | translate }}</button>
+						</div>
+					</form>
+					
+					<form id="calResultForm2" class="form-horizontal">
+
+                        <div *ngIf="showForecast2" class="paddingTo10">
+                            <p class="fontLarge colorToWarning"><strong>{{'CW.FORECASR_EXPLAIN' | translate}}</strong></p>
+                            <p *ngIf="langInd === GCONSTANTS.LANG_EN" class="fontLarge"><strong>{{forecast2.day}} {{monthMap[forecast2.month]}} ( {{weekDayEnMap[forecast2.weekDay]}} ) </strong></p>
+                            <p *ngIf="langInd === GCONSTANTS.LANG_ZH" class="fontLarge"><strong>{{forecast2.month}} {{'CW.MONTH' | translate}} {{forecast2.day}} {{'CW.DAY' | translate}} ( {{weekDayZhMap[forecast.weekDay]}} )</strong></p>
+                            <hr style="border-top: 3px solid #eee; margin-top: 0px;" />
+                            <p class="fontLarge"><strong>{{forecast2.temp}}</strong></p>
+                            <p *ngIf="langInd === GCONSTANTS.LANG_EN" class="fontLarge"><strong>{{forecast2.desc_en}}</strong></p>
+                            <p *ngIf="langInd === GCONSTANTS.LANG_ZH" class="fontLarge"><strong>{{forecast2.desc_zh}}</strong></p>
+                            <button type="submit" class="btn btn-warning btn-lg mainYellowBtn" (click)="fromForecastToCal2();">{{ 'CW.BACK' | translate }}</button>
+                        </div>
+
+						<div *ngIf="showResult2" [@fadeInOut]="showResult2" class="ui-g">
+                            <div class="ui-g-12 centerAndMiddle">
+                                <label *ngIf="langInd === GCONSTANTS.LANG_EN" class="centerAndMiddle fontLarge paddingBottomTo7">
+                                    {{weatherResult2.day}} {{monthMap[weatherResult2.month]}} {{weatherResult2.year}} ( {{weekDayEnMap[weatherResult2.weekDay]}} )</label>
+								<label *ngIf="langInd === GCONSTANTS.LANG_EN" class="fontMiddle paddingBottomTo7" >
+                                    {{'CW.RECENT' | translate}} {{selectedFilterYear}} {{'CW.YEARS_OF_DATA' | translate}}</label>
+                                <label *ngIf="langInd === GCONSTANTS.LANG_ZH" class="centerAndMiddle fontLarge paddingBottomTo7">
+                                    {{weatherResult2.year}} {{'CW.YEAR' | translate}} {{weatherResult2.month}} {{'CW.MONTH' | translate}} {{weatherResult2.day}} {{'CW.DAY' | translate}} ( {{weekDayZhMap[weatherResult2.weekDay]}} )</label>
+								<label *ngIf="langInd === GCONSTANTS.LANG_ZH" class="fontMiddle paddingBottomTo7" >
+                                    {{'CW.RECENT' | translate}}{{selectedFilterYear}}{{'CW.YEARS_OF_DATA' | translate}}</label>
+                            </div>
+							<div class="ui-g-12 ui-md-6 ui-lg-6">
+								<span class="middleHelperSpan"></span>
+								<img [src]="weatherIconPath2" />
+							</div>
+							<div class="ui-g-12 ui-md-6 ui-lg-6">
+								<div class="ui-g-12 ui-md-12 ui-lg-12 colorToWarning">
+									<p class="fontXXLarge"><strong>{{ weatherResult2.rainYear | number : '1.1-1' }}% {{ 'CW.WILL_RAIN' | translate }}</strong></p>
+								</div>
+								<div class="ui-g-12 ui-md-12 ui-lg-12">
+									<p class="fontXLarge"><strong>{{ 'CW.TEMPERATURE' | translate }} {{ weatherResult2.temp | number : '1.1-1' }}°C</strong></p>
+								</div>
+								<div class="ui-g-12 ui-md-12 ui-lg-12">
+									<p class="fontXLarge"><strong>{{ 'CW.HUMIDITY' | translate }} {{ weatherResult2.humidity | number : '1.1-1' }}%</strong></p>
+								</div>
+							</div>
+							
+							<div class="ui-g-12 ui-md-12 ui-lg-12 paddingToZero">
+								<hr style="border-top: 3px solid #eee;" />
+							</div>
+							
+							<div *ngIf="weatherResult2.drizzle !== 0" class="ui-g-12 ui-md-12 ui-lg-12">
+								<p class="fontLarge" [ngClass]="{'colorToWarning': maxRainValue2 === weatherResult2.drizzle }"><strong>{{ weatherResult2.drizzle | number : '1.1-1' }}% {{ 'CW.DRIZZLE' | translate }}</strong></p>
+							</div>
+							<div *ngIf="weatherResult2.light !== 0" class="ui-g-12 ui-md-12 ui-lg-12">
+								<p class="fontLarge" [ngClass]="{'colorToWarning': maxRainValue2 === weatherResult2.light }"><strong>{{ weatherResult2.light | number : '1.1-1' }}% {{ 'CW.LIGHT_RAIN' | translate }}</strong></p>
+							</div>
+							<div *ngIf="weatherResult2.moderate !== 0" class="ui-g-12 ui-md-12 ui-lg-12">
+								<p class="fontLarge" [ngClass]="{'colorToWarning': maxRainValue2 === weatherResult2.moderate }"><strong>{{ weatherResult2.moderate | number : '1.1-1' }}% {{ 'CW.MODERATE_RAIN' | translate }}</strong></p>
+							</div>
+							<div *ngIf="weatherResult2.heavy !== 0" class="ui-g-12 ui-md-12 ui-lg-12">
+								<p class="fontLarge" [ngClass]="{'colorToWarning': maxRainValue2 === weatherResult2.heavy }"><strong>{{ weatherResult2.heavy | number : '1.1-1' }}% {{ 'CW.HEAVY_RAIN' | translate }}</strong></p>
+							</div>
+							<div *ngIf="weatherResult2.violent !== 0" class="ui-g-12 ui-md-12 ui-lg-12">
+								<p class="fontLarge" [ngClass]="{'colorToWarning': maxRainValue2 === weatherResult2.violent }"><strong>{{ weatherResult2.violent | number : '1.1-1' }}% {{ 'CW.VIOLENT_RAIN' | translate }}</strong></p>
+							</div>
+							<div *ngIf="weatherResult2.torrential !== 0" class="ui-g-12 ui-md-12 ui-lg-12">
+								<p class="fontLarge" [ngClass]="{'colorToWarning': maxRainValue2 === weatherResult2.torrential }"><strong>{{ weatherResult2.torrential | number : '1.1-1' }}% {{ 'CW.Torrential_rain' | translate }}</strong></p>
+							</div>
+							
+                            <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                <a href="javascript:void(0)" (click)="toggleMore2();"> 
+                                    <p class="fontLarge colorToWhite" *ngIf="!showDtl2"><strong>{{ 'CW.MORE' | translate }}  </strong><span class="glyphicon glyphicon-menu-down"></span></p>
+                                    <p class="fontLarge colorToWhite" *ngIf="showDtl2"><strong>{{ 'CW.LESS' | translate }}  </strong><span class="glyphicon glyphicon-menu-up"></span></p>
+                                    
+                                </a>
+                            </div>
+
+                            <div *ngIf="showDtl2" [@fadeInOut]="showDtl2" class="ui-g">
+                                <div class="ui-g-12 centerAndMiddle">
+									<p class="fontLarge colorToWarning"><strong>{{'WF.HKO_PROVIDED' | translate}}</strong></p>
+                                    <p-dataTable [value]="weatherDtlList2">
+                                        <p-column field="year" header="{{ 'CW.YEAR' | translate }}"></p-column>
+                                        <p-column field="rainfallDescEN" *ngIf="langInd === GCONSTANTS.LANG_EN" header="{{ 'CW.RAIN_INTENSITY' | translate }}"></p-column>
+                                        <p-column field="rainfallDescZH" *ngIf="langInd === GCONSTANTS.LANG_ZH" header="{{ 'CW.RAIN_INTENSITY' | translate }}"></p-column>
+                                        <p-column field="rainfall" header="{{ 'CW.RAINFALL' | translate }} (mm)"></p-column>
+                                    </p-dataTable>
+                                </div>
+                            </div>
+							
+							<div class="ui-g-12 ui-md-12 ui-lg-12">
+								<button type="submit" class="btn btn-warning btn-lg mainYellowBtn" (click)="fromResultToCal2();">{{ 'CW.BACK' | translate }}</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</p-panel>
+    </div>
+</div>
+
+<button id="langIndBtn" (click)="changeLangInd()" class="btn ToHidden"></button>

@@ -1,0 +1,77 @@
+<!-- uncomment code for absolute positioning tweek see top comment in css -->
+<!-- <div class="absolute-wrapper"> </div> -->
+<div class="row">
+	<!-- Menu -->
+	<div class="side-menu centerAndMiddle">
+
+		<nav class="navbar navbar-default" role="navigation">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<div class="brand-wrapper">
+					<!-- Hamburger -->
+					<button type="button" class="navbar-toggle">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+
+					<!-- Left Hearder -->
+					<div class="backgroundColorToWhite">
+						<img src="./app/assets/img/logo/hkRain_t_3.gif" class="logoImgSize" alt="Responsive image">
+						<img src="./app/assets/img/logo/hk_rain_sign_black.png" class="signImgSize" alt="Responsive image">
+					</div>
+					
+				</div>
+
+			</div>
+
+			<!-- Main Menu -->
+			<div class="side-menu-container">
+				<ul class="nav navbar-nav">
+					<li>
+						<div class="langSection">
+							<a href="javascript:void(0)" (click)="appChangeLang('en'); translate.use('en'); toggleMenuSlideOut();"> {{ 'MENU.ENG' | translate }}</a>
+							<a href="javascript:void(0)" (click)="appChangeLang('zh'); translate.use('zh'); toggleMenuSlideOut();"> {{ 'MENU.ZH' | translate }}</a>
+						</div>
+					</li>
+					<li>
+						<a routerLink="calculateWeather" (click)="toggleMenuSlideOut();">
+							<span class="glyphicon glyphicon-home"></span> {{ 'MENU.HOME' | translate }}
+						</a>
+					</li>
+					<li>
+						<a routerLink="weatherForecast" (click)="toggleMenuSlideOut();">
+							<span class="glyphicon glyphicon-cloud"></span> {{ 'MENU.9DAY_WEATHER_FORECAST' | translate }}
+						</a>
+					</li>
+					<li>
+						<a routerLink="setting" (click)="toggleMenuSlideOut();">
+							<span class="glyphicon glyphicon-cog"></span> {{ 'MENU.SETTING' | translate }}
+						</a>
+					</li>
+					<li>
+						<a routerLink="about" (click)="toggleMenuSlideOut();">
+							<span class="glyphicon glyphicon-info-sign"></span> {{ 'MENU.ABOUT' | translate }}
+						</a>
+					</li>
+					<li>
+						<a routerLink="feedback" (click)="toggleMenuSlideOut();">
+							<span class="glyphicon glyphicon-comment"></span> {{ 'MENU.FEEDBACK' | translate }}
+						</a>
+					</li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</nav>
+
+	</div>
+
+	
+	<!-- Main Content -->
+	<div class="container-fluid">
+		<div class="side-body">
+			<router-outlet></router-outlet>
+		</div>
+	</div>
+</div>
