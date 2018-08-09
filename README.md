@@ -11,9 +11,9 @@ This is a web based application for forcasting the weather in Hong Kong.
 ## System Architecture
 
 ## Front end
-![AngularJS2 with typescript](http://www.masterangular.com/images/angular2typescript.png)
+![Angular2 with typescript](https://www.etatvasoft.com/blog/wp-content/uploads/2017/09/angular4blog-image.png)
 
-Front end: AngularJS2 with typescript
+Front end: Angular 4 with typescript
 
 
 ## Back end
