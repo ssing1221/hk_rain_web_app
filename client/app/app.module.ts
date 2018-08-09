@@ -12,6 +12,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { SettingComponent } from './components/setting/setting.component';
 import { WeatherForecastComponent } from './components/weatherForecast/weatherForecast.component';
+import { WeeklyPredictComponent } from './components/weeklyPredict/weeklyPredict.component';
 import { CalculateWeatherComponent } from './components/calculateWeather/calculateWeather.component';
 
 import { WeatherService } from './services/weather.service';
@@ -23,7 +24,7 @@ import { OT_GConstants, GConstants } from './constants/GConstants';
 
 import { TranslateModule } from 'ng2-translate';
 
-import { DataTableModule, SharedModule, TabViewModule,
+import { DataTableModule, SharedModule, TabViewModule, ChartModule,
          BlockUIModule, PanelModule, MessagesModule, GrowlModule} from 'primeng/primeng';
 
 @NgModule({
@@ -40,6 +41,7 @@ import { DataTableModule, SharedModule, TabViewModule,
     PanelModule,
     MessagesModule,
     GrowlModule,
+    ChartModule,
     TranslateModule.forRoot()
   ],
   declarations: [
@@ -49,6 +51,7 @@ import { DataTableModule, SharedModule, TabViewModule,
     FeedbackComponent,
     SettingComponent,
     WeatherForecastComponent,
+    WeeklyPredictComponent,
     CalculateWeatherComponent
   ],
   providers: [

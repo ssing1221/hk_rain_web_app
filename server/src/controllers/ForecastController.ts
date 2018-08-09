@@ -19,7 +19,7 @@ class ForecastController {
                 }
                 else {
                     res.status(200).send({ "success": "success" });
-                };
+                }
             });
         }
         catch (e) {
@@ -36,7 +36,7 @@ class ForecastController {
             var _id: string = req.params._id;
             var forecastRepository = new ForecastRepository();
 
-            forecastRepository.findById(_id, (error, found) => {
+            forecastRepository.findById(_id, (error, found:any) => {
                 if (error) {
                     res.send({ "error": "error" });
                 }
@@ -47,9 +47,9 @@ class ForecastController {
                         }
                         else {
                             res.send({ "success": "success" });
-                        };
+                        }
                     });
-                };
+                }
             });
         }
         catch (e) {
@@ -112,7 +112,7 @@ class ForecastController {
                     res.status(400).send({ 'error': err });
                 }else {
                     res.status(200).send({ "success": "success" });
-                };
+                }
             });
          } catch (e) {
             console.log(e);
@@ -128,7 +128,7 @@ class ForecastController {
                     res.status(400).send({ 'error': err });
                 }else {
                     res.status(200).send({ "success": "success" });
-                };
+                }
             });
          } catch (e) {
             console.log(e);
@@ -173,7 +173,7 @@ class ForecastController {
                 }
                 else {
                     res.send(result);
-                };
+                }
             });
         } catch (e) {
             console.log(e);

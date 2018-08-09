@@ -13,7 +13,6 @@ import { OT_GConstants, IGConstants } from './../../constants/GConstants';
 import { Inject } from '@angular/core';
 import globalVar = require('./../../globalVar');
 import { Message } from 'primeng/primeng';
-declare var $: JQueryStatic;
 
 @Component({
     selector: 'my-calculateWeather',
@@ -56,9 +55,9 @@ export class CalculateWeatherComponent implements OnInit {
 
     // 22222222 calculate weather 2222222222 
     error2: any;
-    selectYearList2: Array<Object>;
-    selectMonthList2: Array<Object>;
-    selectDayList2: Array<Object>;
+    selectYearList2: Array<Object> = [];
+    selectMonthList2: Array<Object> = [];
+    selectDayList2: Array<Object> = [];
     selectedYear2: number;
     selectedMonth2: number;
     selectedDay2: number;
@@ -72,13 +71,15 @@ export class CalculateWeatherComponent implements OnInit {
     showForecast2: boolean;
     blockedCalPanel2: boolean = false;
     showDtl2: boolean;
-    weatherDtlList2: Weather[];
+    weatherDtlList2: Weather[] = [];
 
     langInd: string;
 
     monthMap: {};
     weekDayEnMap: {};
     weekDayZhMap: {};
+
+    forecastList: Forecast[] = [];
 
     constructor(
         @Inject(OT_GConstants) private GCONSTANTS: IGConstants,
@@ -91,14 +92,13 @@ export class CalculateWeatherComponent implements OnInit {
 
         // Set filter year from gloalVar
         this.selectedFilterYear = globalVar.filterYear;
-
     }
 
     resetForm1() {
         // 11111111
-        this.selectYearList = null;
-        this.selectMonthList = null;
-        this.selectDayList = null;
+        this.selectYearList = [];
+        this.selectMonthList = [];
+        this.selectDayList = [];
         this.selectedYear = null;
         this.selectedMonth = null;
         this.selectedDay = null;
@@ -109,14 +109,14 @@ export class CalculateWeatherComponent implements OnInit {
         this.showForecast = false;
         this.blockedCalPanel = false;
         this.showDtl = false;
-        this.weatherDtlList = null;
+        this.weatherDtlList = [];
     }
 
     resetForm2() {
         // 22222222
-        this.selectYearList2 = null;
-        this.selectMonthList2 = null;
-        this.selectDayList2 = null;
+        this.selectYearList2 = [];
+        this.selectMonthList2 = [];
+        this.selectDayList2 = [];
         this.selectedYear2 = null;
         this.selectedMonth2 = null;
         this.selectedDay2 = null;
@@ -128,7 +128,7 @@ export class CalculateWeatherComponent implements OnInit {
         this.showForecast2 = false;
         this.blockedCalPanel2 = false;
         this.showDtl2 = false;
-        this.weatherDtlList2 = null;
+        this.weatherDtlList2 = [];
     }
 
     init1() {
@@ -169,6 +169,28 @@ export class CalculateWeatherComponent implements OnInit {
         this.init1();
         this.init2();
 
+        this.initForecast();
+
+    }
+
+    initForecast() {
+        this.forecastList = [];
+        this.forecastService.getForecast()
+            .then(forecastList => {
+                this.forecastList = forecastList;
+                for (var key in this.forecastList) {
+                    if (this.forecastList.hasOwnProperty(key)) {
+                        let currDate: Date = new Date();
+                        if (currDate.getDate() === this.forecastList[0].day) {
+                            currDate.setDate(currDate.getDate() + Number(key));
+                            this.forecastList[key].weekDay = Number(currDate.getDay());
+                        } else {
+                            currDate.setDate(currDate.getDate() + Number(key) + 1);
+                            this.forecastList[key].weekDay = Number(currDate.getDay());
+                        }
+                    }
+                }
+            });
     }
 
     // ------------- Component Change -------------//
@@ -176,7 +198,7 @@ export class CalculateWeatherComponent implements OnInit {
         this.selectedYear = +this.selectedYear;
         this.selectedMonth = null;
         this.selectedDay = null;
-        this.selectDayList = null;
+        this.selectDayList = [];
         this.selectMonthList = this.getSelectMonthList(this.selectedYear);
 
         this.dayDisable = true;
@@ -185,7 +207,7 @@ export class CalculateWeatherComponent implements OnInit {
         this.selectedYear2 = +this.selectedYear2;
         this.selectedMonth2 = null;
         this.selectedDay2 = null;
-        this.selectDayList2 = null;
+        this.selectDayList2 = [];
         this.selectMonthList2 = this.getSelectMonthList(this.selectedYear2);
 
         this.dayDisable = true;
@@ -198,7 +220,7 @@ export class CalculateWeatherComponent implements OnInit {
             this.selectedDay = null;
             this.dayDisable = false;
         } else {
-            this.selectDayList = null;
+            this.selectDayList = [];
             this.selectedDay = null;
             this.dayDisable = true;
         }
@@ -210,7 +232,7 @@ export class CalculateWeatherComponent implements OnInit {
             this.selectedDay2 = null;
             this.dayDisable2 = false;
         } else {
-            this.selectDayList2 = null;
+            this.selectDayList2 = [];
             this.selectedDay2 = null;
             this.dayDisable2 = true;
         }
@@ -225,18 +247,18 @@ export class CalculateWeatherComponent implements OnInit {
 
     getSelectMonthList(selectYear: number) {
         let monthList = [];
-        var nullMonth = { value: null, label: null };
+        let nullMonth = { value: null, label: null };
         monthList.push(nullMonth);
         let currDate = new Date();
         if (Number(currDate.getFullYear()) !== selectYear) {
-            for (var i = 1; i <= 12; i++) {
-                var month = { value: i, label: i };
+            for (let i = 1; i <= 12; i++) {
+                let month = { value: i, label: i };
                 monthList.push(month);
             }
         } else {
             let currMonth: number = Number(currDate.getMonth()) + 1;
-            for (var i = currMonth; i <= 12; i++) {
-                var month = { value: i, label: i };
+            for (let i = currMonth; i <= 12; i++) {
+                let month = { value: i, label: i };
                 monthList.push(month);
             }
         }
@@ -253,13 +275,13 @@ export class CalculateWeatherComponent implements OnInit {
 
         if (currYear === selectYear && currMonth === selectMonth) {
             let currDay: number = Number(currDate.getDate());
-            for (var i = currDay; i <= this.daysInMonth(selectMonth, selectYear); i++) {
-                var day = { value: i, label: i };
+            for (let i = currDay; i <= this.daysInMonth(selectMonth, selectYear); i++) {
+                let day = { value: i, label: i };
                 dayList.push(day);
             }
         } else {
-            for (var i = 1; i <= this.daysInMonth(selectMonth, selectYear); i++) {
-                var day = { value: i, label: i };
+            for (let i = 1; i <= this.daysInMonth(selectMonth, selectYear); i++) {
+                let day = { value: i, label: i };
                 dayList.push(day);
             }
         }
@@ -280,7 +302,7 @@ export class CalculateWeatherComponent implements OnInit {
         let inputDate: Date = new Date(Number(this.selectedYear),
             Number(this.selectedMonth) - 1, Number(this.selectedDay));
 
-        for (var i = 0; i < 9; i++) {
+        for (let i = 0; i < 9; i++) {
             let currDate: Date = new Date();
             currDate.setDate(currDate.getDate() + i);
             currDate.setHours(0, 0, 0, 0);
@@ -302,7 +324,7 @@ export class CalculateWeatherComponent implements OnInit {
                     this.forecast.weekDay = weekDay;
                     this.showForecast = true;
                     this.blockedCalPanel = false;
-                }).catch(error => {this.msgs.push({ severity: 'error', summary: 'Error: ', detail: 'Something went wrong...' });});
+                }).catch(error => { this.msgs.push({ severity: 'error', summary: 'Error: ', detail: 'Something went wrong...' }); });
         } else {
             this.showForecast = false;
             // calculate weather
@@ -334,7 +356,7 @@ export class CalculateWeatherComponent implements OnInit {
         let inputDate2: Date = new Date(Number(this.selectedYear2),
             Number(this.selectedMonth2) - 1, Number(this.selectedDay2));
 
-        for (var i = 0; i < 9; i++) {
+        for (let i = 0; i < 9; i++) {
             let currDate2: Date = new Date();
             currDate2.setDate(currDate2.getDate() + i);
             currDate2.setHours(0, 0, 0, 0);
@@ -356,7 +378,7 @@ export class CalculateWeatherComponent implements OnInit {
                     this.forecast2.weekDay = weekDay2;
                     this.showForecast2 = true;
                     this.blockedCalPanel2 = false;
-                }).catch(error => {this.msgs.push({ severity: 'error', summary: 'Error: ', detail: 'Something went wrong...' });});
+                }).catch(error => { this.msgs.push({ severity: 'error', summary: 'Error: ', detail: 'Something went wrong...' }); });
         } else {
             this.showForecast2 = false;
             this.weatherService
@@ -390,47 +412,47 @@ export class CalculateWeatherComponent implements OnInit {
 
     getWeatherDtlList1() {
         this.weatherService
-                .getWeatherDtlList(this.selectedMonth, this.selectedDay, this.selectedFilterYear)
-                .then( result => {
-                    for (var key in result) {
-                        if (result.hasOwnProperty(key)) {
-                            // Change rainfall 999 to 0.05
-                            if (result[key].rainfall === 999) {
-                                result[key].rainfall = 0.05;
-                            }
-
-                            result[key].rainfallDescEN = this.getRainfallDescEN(result[key].rainfall);
-                            result[key].rainfallDescZH = this.getRainfallDescZH(result[key].rainfall);
+            .getWeatherDtlList(this.selectedMonth, this.selectedDay, this.selectedFilterYear)
+            .then(result => {
+                for (var key in result) {
+                    if (result.hasOwnProperty(key)) {
+                        // Change rainfall 999 to 0.05
+                        if (result[key].rainfall === 999) {
+                            result[key].rainfall = 0.05;
                         }
+
+                        result[key].rainfallDescEN = this.getRainfallDescEN(result[key].rainfall);
+                        result[key].rainfallDescZH = this.getRainfallDescZH(result[key].rainfall);
                     }
-                    this.weatherDtlList = result;
-                })
-                .catch(error => {
-                    console.log('error: ' + this.error);
-                }); // TODO: Display error message
-                
-    }    
+                }
+                this.weatherDtlList = result;
+            })
+            .catch(error => {
+                console.log('error: ' + this.error);
+            }); // TODO: Display error message
+
+    }
     getWeatherDtlList2() {
         this.weatherService
-                .getWeatherDtlList(this.selectedMonth2, this.selectedDay2, this.selectedFilterYear)
-                .then(result => {
-                    for (var key in result) {
-                        if (result.hasOwnProperty(key)) {
-                            // Change rainfall 999 to 0.05
-                            if (result[key].rainfall === 999) {
-                                result[key].rainfall = 0.05;
-                            }
-							
-							result[key].rainfallDescEN = this.getRainfallDescEN(result[key].rainfall);
-                            result[key].rainfallDescZH = this.getRainfallDescZH(result[key].rainfall);
+            .getWeatherDtlList(this.selectedMonth2, this.selectedDay2, this.selectedFilterYear)
+            .then(result => {
+                for (var key in result) {
+                    if (result.hasOwnProperty(key)) {
+                        // Change rainfall 999 to 0.05
+                        if (result[key].rainfall === 999) {
+                            result[key].rainfall = 0.05;
                         }
+
+                        result[key].rainfallDescEN = this.getRainfallDescEN(result[key].rainfall);
+                        result[key].rainfallDescZH = this.getRainfallDescZH(result[key].rainfall);
                     }
-                    this.weatherDtlList2 = result;
-                })
-                .catch(error => {
-                    console.log('error2: ' + this.error2);
-                }); // TODO: Display error message
-                
+                }
+                this.weatherDtlList2 = result;
+            })
+            .catch(error => {
+                console.log('error2: ' + this.error2);
+            }); // TODO: Display error message
+
     }
 
     addCalInputForm() {
@@ -546,38 +568,38 @@ export class CalculateWeatherComponent implements OnInit {
         this.showForecast2 = false;
     }
 
-    getRainfallDescEN(rainfall: any){
-        if(rainfall === 0){
+    getRainfallDescEN(rainfall: any) {
+        if (rainfall === 0) {
             return this.GCONSTANTS.SUNSHINE_EN;
-        }else if(rainfall === this.GCONSTANTS.DRIZZLE_THRESHOLD){
+        } else if (rainfall === this.GCONSTANTS.DRIZZLE_THRESHOLD) {
             return this.GCONSTANTS.DRIZZLE_EN;
-        }else if(rainfall <= this.GCONSTANTS.LIGHT_THRESHOLD){
+        } else if (rainfall <= this.GCONSTANTS.LIGHT_THRESHOLD) {
             return this.GCONSTANTS.LIGHT_EN;
-        }else if(rainfall <= this.GCONSTANTS.MODERATE_THRESHOLD){
+        } else if (rainfall <= this.GCONSTANTS.MODERATE_THRESHOLD) {
             return this.GCONSTANTS.MODERATE_EN;
-        }else if(rainfall <= this.GCONSTANTS.HEAVY_THRESHOLD){
+        } else if (rainfall <= this.GCONSTANTS.HEAVY_THRESHOLD) {
             return this.GCONSTANTS.HEAVY_EN;
-        }else if(rainfall <= this.GCONSTANTS.VIOLENT_THRESHOLD){
+        } else if (rainfall <= this.GCONSTANTS.VIOLENT_THRESHOLD) {
             return this.GCONSTANTS.VIOLENT_EN;
-        }else if(rainfall >= this.GCONSTANTS.TORRENTIAL_THRESHOLD){
+        } else if (rainfall >= this.GCONSTANTS.TORRENTIAL_THRESHOLD) {
             return this.GCONSTANTS.TORRENTIAL_EN;
         }
     }
 
-     getRainfallDescZH(rainfall: any){
-        if(rainfall === 0){
+    getRainfallDescZH(rainfall: any) {
+        if (rainfall === 0) {
             return this.GCONSTANTS.SUNSHINE_ZH;
-        }else if(rainfall === this.GCONSTANTS.DRIZZLE_THRESHOLD){
+        } else if (rainfall === this.GCONSTANTS.DRIZZLE_THRESHOLD) {
             return this.GCONSTANTS.DRIZZLE_ZH;
-        }else if(rainfall <= this.GCONSTANTS.LIGHT_THRESHOLD){
+        } else if (rainfall <= this.GCONSTANTS.LIGHT_THRESHOLD) {
             return this.GCONSTANTS.LIGHT_ZH;
-        }else if(rainfall <= this.GCONSTANTS.MODERATE_THRESHOLD){
+        } else if (rainfall <= this.GCONSTANTS.MODERATE_THRESHOLD) {
             return this.GCONSTANTS.MODERATE_ZH;
-        }else if(rainfall <= this.GCONSTANTS.HEAVY_THRESHOLD){
+        } else if (rainfall <= this.GCONSTANTS.HEAVY_THRESHOLD) {
             return this.GCONSTANTS.HEAVY_ZH;
-        }else if(rainfall <= this.GCONSTANTS.VIOLENT_THRESHOLD){
+        } else if (rainfall <= this.GCONSTANTS.VIOLENT_THRESHOLD) {
             return this.GCONSTANTS.VIOLENT_ZH;
-        }else if(rainfall >= this.GCONSTANTS.TORRENTIAL_THRESHOLD){
+        } else if (rainfall >= this.GCONSTANTS.TORRENTIAL_THRESHOLD) {
             return this.GCONSTANTS.TORRENTIAL_ZH;
         }
     }

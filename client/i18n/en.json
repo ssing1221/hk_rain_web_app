@@ -7,6 +7,7 @@
     "ENG": "ENG",
     "ZH": "繁",
     "9DAY_WEATHER_FORECAST": "9-day Weather Forecast",
+    "WEEKLY_PREDICT": "Weekly Predict",
     "SETTING": "Setting",
     "EMPTY": "Empty",
     "ABOUT": "About",
@@ -24,6 +25,7 @@
     "MONTH": "Month",
     "DAY": "Day",
     "GO": "Go",
+    "TODAY_WEATHER": "Today's Weather",
     "BACK": "Back",
     "MORE": "More",
     "LESS": "Less",
@@ -51,6 +53,12 @@
     "DAY": "Day",
     "GO": "Go",
     "BACK": "Back"
+  },
+  "WP": {
+    "WEEKLY_PREDICT": "Weekly Predict",
+    "RAIN_PERCENTAGE": "Raining Percentage %",
+    "RECENT": "Recent",
+    "YEARS_OF_DATA": "years of data"
   },
   "SET": {
     "YEARS_OF_DATA_TO_USE": "Years of data to use"

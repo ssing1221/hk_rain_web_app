@@ -1,0 +1,8 @@
+/.project
+/.history
+/node_modules/
+/dist/
+/compile_result.log
+/npm-debug.log
+/db_backup
+package-lock.json

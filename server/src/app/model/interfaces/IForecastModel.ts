@@ -7,6 +7,7 @@ import mongoose = require("mongoose");
 interface IForecastModel extends mongoose.Document {
     month: Number;
     day: Number;
+    year: Number;
     temp: String;
     desc_en: String;        
     desc_zh: String;        

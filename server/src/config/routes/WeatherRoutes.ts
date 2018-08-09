@@ -23,6 +23,8 @@ class WeatherRoutes {
         router.get("/getAllWeather", controller.getAllWeather);
         router.get("/getWeatherDtlList/:inputMonth/:inputDay/:filterYear"
                     , controller.getWeatherDtlList);
+        router.get("/getWeeklySelectList", controller.getWeeklySelectList);
+        router.get("/getWeeklyPredictResult/:weeklySelect/:filterYear", controller.getWeeklyPredictResult);
         return router;
     }
 }

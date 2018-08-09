@@ -23,7 +23,7 @@ class AccountController {
                     } else {
                         res.status(200).send({"isAccept": true});
                     }
-                };
+                }
             });
         }
         catch (e) {

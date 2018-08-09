@@ -20,7 +20,7 @@ class FeedbackController {
                 }
                 else {
                     res.send({ "success": "success" });
-                };
+                }
             });
         }
         catch (e) {
@@ -40,7 +40,7 @@ class FeedbackController {
                 }
                 else {
                     res.send(result);
-                };
+                }
             });
         } catch (e) {
             console.log(e);

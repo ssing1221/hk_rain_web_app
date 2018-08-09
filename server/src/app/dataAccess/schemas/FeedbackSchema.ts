@@ -4,14 +4,14 @@
 
 import DataAccess = require('../DataAccess');
 import IFeedbackModel = require("./../../model/interfaces/IFeedbackModel");
+import Mongoose = require('mongoose');
 
-var mongoose = DataAccess.mongooseInstance;
 var mongooseConnection = DataAccess.mongooseConnection;
 
 class FeedbackSchema {
 
     static get schema () {
-        var schema =  mongoose.Schema({
+        var schema = new Mongoose.Schema({
             name : {
                 type: String,
                 required: true

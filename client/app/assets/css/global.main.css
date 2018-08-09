@@ -30,12 +30,20 @@ a:hover, a:active, a:focus {
 	color: white;
 }
 
+.colorToBlue{
+	color: #007ACC;
+}
+
 .colorToWarning{
 	color: #F0AD4E;
 }
 
 .paddingToZero{
 	padding:0px;
+}
+
+.paddingBottomToZero{
+	padding-bottom: 0px;
 }
 
 .paddingBottomTo7{

@@ -8,8 +8,8 @@
       true,
       4
     ],
+    "allowUnusedLabels": false,
     "label-position": true,
-    "label-undefined": true,
     "max-line-length": [
       true,
       200
@@ -26,15 +26,12 @@
     ],
     "no-construct": true,
     "no-debugger": true,
-    "no-duplicate-key": true,
     "no-duplicate-variable": true,
     "no-empty": true,
     "no-eval": true,
     "no-string-literal": false,
     "no-trailing-whitespace": false,
     "no-unused-variable": false,
-    "no-unreachable": true,
-    "no-use-before-declare": true,
     "radix": true,
     "semicolon": [true],
     "triple-equals": [

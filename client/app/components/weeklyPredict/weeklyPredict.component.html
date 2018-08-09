@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="mainComponent fade-in one col-xs-12 col-sm-12">
+            <div class="paddingTo10">
+                <div class="form-group">
+                    <p class="fontXLarge col-xs-12 col-sm-12">
+                        <strong>{{'WP.WEEKLY_PREDICT' | translate}}</strong>
+                    </p>
+                    <div class="form-group col-xs-12 col-sm-12">
+                        <select id="weeklySelect" name="weeklySelect" 
+                                class="form-control noBorderRadius noBorder" 
+                                [(ngModel)]="selectedWeek" 
+                                (ngModelChange)="weekChange()">
+                            <option *ngFor="let week of weeklySelectList" [ngValue]="week.value">{{week.label}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row paddingBottomTo7">
+    <h4 class="colorToBlue" >{{ 'WP.RAIN_PERCENTAGE' | translate }}</h4>
+    <label *ngIf="langInd === GCONSTANTS.LANG_EN" class="fontMiddle paddingBottomTo7" >
+        {{'WP.RECENT' | translate}} {{selectedFilterYear}} {{'WP.YEARS_OF_DATA' | translate}}</label>
+    <label *ngIf="langInd === GCONSTANTS.LANG_ZH" class="fontMiddle paddingBottomTo7" >
+            {{'WP.RECENT' | translate}}{{selectedFilterYear}}{{'WP.YEARS_OF_DATA' | translate}}</label>
+    <p-chart type="line" [data]="chartData" [options]="chartOptions" (onDataSelect)="selectData($event)"></p-chart>
+</div>
+<button id="langIndBtn" (click)="changeLangInd()" class="btn ToHidden"></button>

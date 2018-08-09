@@ -43,6 +43,20 @@ export class WeatherService {
             .catch(this.handleError);
     }
 
+    getWeeklySelectList(): Promise<any> {
+        return this.http.get(this.baserUrl + '/' + 'getWeeklySelectList')
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handleError);
+    }
+
+    getWeeklyPredictResult(weeklySelect: string, filterYear: number): Promise<any> {
+        return this.http.get(this.baserUrl + '/' + 'getWeeklyPredictResult' + '/' + weeklySelect + '/' + filterYear)
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handleError);
+    }
+
     private handleError(error: any) {
         console.error('Something went wrong...', error);
         return Promise.reject(error.message || error);

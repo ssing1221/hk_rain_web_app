@@ -1,8 +1,3 @@
-/**
- * Created by Josh Chan on 02-12-2016.
- */
-
-
 "use strict";
 
 const gulp = require("gulp"),
@@ -92,9 +87,10 @@ gulp.task("libs", () => {
     return gulp.src([
         'core-js/client/**',
         'zone.js/dist/zone.js',
-        'reflect-metadata/Reflect.js',
-        'reflect-metadata/Reflect.js.map',
         'systemjs/dist/system.src.js',
+        '@angular/**',
+        'ng2-translate/**',
+        'rxjs/**',
         'primeng/**',
     ], { cwd: "node_modules/**" }) /* Glob required here. */
         .pipe(gulp.dest("dist/client/libs"));
@@ -108,16 +104,6 @@ gulp.task("css", () => {
         'bootstrap/dist/**/**'
     ], { cwd: "node_modules/**" }) /* Glob required here. */
         .pipe(gulp.dest("dist/client/css"));
-});
-
-
-/**
- * Install typings for server and client.
- */
-gulp.task("installTypings", function () {
-    var stream = gulp.src(["./server/typings.json", "./client/typings.json"])
-        .pipe(gulpTypings(null)); //will install all typingsfiles in pipeline.
-    return stream; // by returning stream gulp can listen to events from the stream and knows when it is finished.
 });
 
 /**
@@ -168,8 +154,4 @@ gulp.task('watch', function () {
 
 gulp.task("build", function (callback) {
     runSequence('clean', 'build:server', 'build:client', 'clientResources', 'serverResources', 'libs', 'css', callback);
-});
-
-gulp.task('default', function () {
-    runSequence('build:server', 'build:client', 'clientResources', 'serverResources', 'libs', 'css', 'watch', 'start');
 });

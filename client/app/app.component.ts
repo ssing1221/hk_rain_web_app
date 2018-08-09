@@ -2,7 +2,6 @@ import { Component, Injectable, Inject, AfterViewInit } from '@angular/core';
 import { OT_GConstants, IGConstants } from './constants/GConstants';
 import { TranslateService } from 'ng2-translate';
 import globalVar = require('./globalVar');
-declare var $: JQueryStatic;
 
 @Component({
     selector: 'my-app',
@@ -24,7 +23,7 @@ export class AppComponent {
 
         // Set default filter Year
         globalVar.filterYear = 45;
-    };
+    }
 
     ngAfterViewInit() {
         // jQuery: find the menu and toggle the menu body;

@@ -1,9 +1,29 @@
 <p-growl [value]="msgs"></p-growl>
 <div class="row">
+    <p-panel styleClass="plainPPanel" [style]="{'margin-top':'0.1px'}">
+        <div class="mainComponent fade-in one">
+            <div class="paddingBottomToZero ui-g-12 ui-md-12 ui-lg-12">
+                <div class="mainComponent">
+                    <div class="paddingTo10">
+                        <div class="form-group">
+                            <p class="fontXLarge"><strong>{{'CW.TODAY_WEATHER' | translate}}</strong></p>
+                            <p class="fontMiddle colorToWarning"><strong>{{'WF.HKO_PROVIDED' | translate}}</strong></p>
+                            <p *ngIf="langInd === GCONSTANTS.LANG_EN && forecastList.length !== 0" class="fontLarge"><strong>{{forecastList[0].day}} {{monthMap[forecastList[0].month]}} ( {{weekDayEnMap[forecastList[0].weekDay]}} ) </strong></p>
+                            <p *ngIf="langInd === GCONSTANTS.LANG_ZH && forecastList.length !== 0" class="fontLarge"><strong>{{forecastList[0].month}} {{'WF.MONTH' | translate}} {{forecastList[0].day}} {{'WF.DAY' | translate}} ( {{weekDayZhMap[forecastList[0].weekDay]}} )</strong></p>
+                            <p *ngIf="forecastList.length !== 0" class="fontLarge"><strong>{{forecastList[0].temp}}</strong></p>
+                            <p *ngIf="langInd === GCONSTANTS.LANG_EN && forecastList.length !== 0" class="fontLarge"><strong>{{forecastList[0].desc_en}}</strong></p>
+                            <p *ngIf="langInd === GCONSTANTS.LANG_ZH && forecastList.length !== 0" class="fontLarge"><strong>{{forecastList[0].desc_zh}}</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-panel>
+    
     <div id="calDiv1" class="ui-g-12 ui-md-9 ui-lg-9">
         <p-blockUI [target]="calPanel" [blocked]="blockedCalPanel"></p-blockUI>
         <p-panel #calPanel styleClass="plainPPanel" [style]="{'margin-top':'0.1px'}">
-            <div class="mainComponent fade-in one">
+            <div class="mainComponent fade-in two">
                 <div class="paddingTo10">
                     <form id="calInputForm" *ngIf="!showResult && !showForecast" [@fadeInOut]="!showResult && !showForecast" class="form-horizontal" (ngSubmit)="calWeather()">
                         <div class="form-group">
@@ -133,7 +153,7 @@
         </p-panel>
     </div>
 
-    <div id="calDiv2" class="ui-g-12 ui-md-3 ui-lg-3 fade-in two">
+    <div id="calDiv2" class="ui-g-12 ui-md-3 ui-lg-3 fade-in three">
 		<p-blockUI [target]="calPanel2" [blocked]="blockedCalPanel2"></p-blockUI>
         <p-panel #calPanel2 styleClass="plainPPanel" [style]="{'margin-top':'0.1px'}">
 			<div class="mainComponent">

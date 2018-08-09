@@ -36,7 +36,7 @@ class ForecastRepository extends RepositoryBase<IForecastModel> {
             $and: [
                 { month: { $in: inputMonth } },
                 { day: { $in: inputDay } }]
-        }, {}, { sort: { month: 1, day: 1 } }, callback);
+        }, {}, { sort: { year: 1, month: 1, day: 1 } }, callback);
     }
 
     findAll(callback: (error: any, result: IForecastModel[]) => void) {

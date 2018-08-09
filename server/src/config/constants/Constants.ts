@@ -19,6 +19,8 @@ class Constants {
     static SKIP_YEAR_1946: number = 1946;
     static GET_ALL_WEATHER_START_YEAR: number = 1885;
 
+    static WEEKLY_PREDICT_NUM: number = 7;
+
     static DAY_INDEX: number = 0;
     static TEMP_INDEX: number = 3;
     static HUMIDITY_INDEX: number = 6;

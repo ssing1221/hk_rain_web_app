@@ -4,14 +4,18 @@
 
 import DataAccess = require('../DataAccess');
 import IForecastModel = require("./../../model/interfaces/IForecastModel");
+import Mongoose = require('mongoose');
 
-var mongoose = DataAccess.mongooseInstance;
 var mongooseConnection = DataAccess.mongooseConnection;
 
 class ForecastSchema {
 
     static get schema () {
-        var schema =  mongoose.Schema({
+        var schema = new Mongoose.Schema({
+            year : {
+                type: Number,
+                required: true
+            },
             month : {
                 type: Number,
                 required: true

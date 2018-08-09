@@ -9,20 +9,23 @@ class DataAccess {
     static mongooseInstance: any;
     static mongooseConnection: Mongoose.Connection;
 
-    constructor () {
+    constructor() {
         DataAccess.connect();
     }
 
-    static connect (): Mongoose.Connection {
-        if(this.mongooseInstance){
+    static connect(): Mongoose.Connection {
+        if (this.mongooseInstance) {
             return this.mongooseInstance;
-        };
-        this.mongooseConnection  = Mongoose.connection;
+        }
+        this.mongooseConnection = Mongoose.connection;
         this.mongooseConnection.once('open', () => {
             console.log('Connected to mongodb.');
         });
 
-        this.mongooseInstance = Mongoose.connect(Sconfig.DB_CONNECTION_STRING);
+        this.mongooseInstance = Mongoose.connect(Sconfig.DB_CONNECTION_STRING, {
+            useMongoClient: true,
+            /* other options */
+        });
 
         return this.mongooseInstance;
     }

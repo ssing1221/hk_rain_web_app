@@ -33,7 +33,7 @@ class Cron {
 	static loopCreateForecast () {
 		var date = new Date();
 		new CronJob('00 00 05,09,12,15,18,21 * * * ', function() { 	
-		//new CronJob('*/20 * * * * *', function() {
+		//new CronJob('*/30 * * * * *', function() {
 
 			console.log('Start loopCreateForecast at: ' + new Date());
 
@@ -42,7 +42,6 @@ class Cron {
 			Feed.load('http://rss.weather.gov.hk/rss/SeveralDaysWeatherForecast.xml', function(errEN, rssEN){
 
 				var str = rssEN['items'][0]['description'];
-				
 				var dateIndex = getIndicesOf("Date/Month:", str, true);
 				var weatherIndex = getIndicesOf("Weather:", str, true);
 				var tempIndex =getIndicesOf("Temp range:", str, true);
@@ -51,6 +50,7 @@ class Cron {
 				var forecastList = [];
 
 				for (var i = 0; i < 9; i++) { 
+					
 					var day = str.substring(dateIndex[i]+12, dateIndex[i]+14);
 					
 					var month = str.substring(dateIndex[i]+15, dateIndex[i]+17);
@@ -62,9 +62,16 @@ class Cron {
 					temp = temp.replace('<br/>', '');
 					temp = temp.replace('C', '°C');
 
+					var year = (new Date()).getFullYear();
+					var currentMonth = (new Date()).getMonth() + 1;
+					
+					if( month === '01' && currentMonth === 12){
+						year = year + 1;
+					}
 					var forecast = { 
 						month: month,
 						day: day,
+						year: year,
 						temp: temp,
 						desc_en: descEN       
 						};
@@ -98,11 +105,12 @@ class Cron {
 					}
 
 					
-					var body = '';
+					let body = '';
+					var request;
 
 					if(isRemoveAll){
 						console.log('Start Remove All Forecast at: ' + new Date());
-						var request = new http.ClientRequest({
+						request = new http.ClientRequest({
 							hostname: Sconfig.IP,
 							port: Sconfig.PORT_NUM,
 							path: '/api/removeAllForecast',
@@ -114,7 +122,7 @@ class Cron {
 						});
 					}else{
 						console.log('Start Remove All Forecast Exp at: ' + new Date());
-						var request = new http.ClientRequest({
+						request = new http.ClientRequest({
 							hostname: Sconfig.IP,
 							port: Sconfig.PORT_NUM,
 							path: '/api/removeAllForecastExp',
@@ -129,9 +137,8 @@ class Cron {
 					request.end(body);
 					request.on('response', function (any) {
 						console.log('END Remove All Forecast at: ' + new Date());
-					});
 
-					for (var i = 0; i < 9; i++) {
+						for (var i = 0; i < 9; i++) {
 						var body = JSON.stringify(forecastList[i]);
 
 						var request = new http.ClientRequest({
@@ -151,6 +158,7 @@ class Cron {
 						});
 
 					}
+					});
 
 				});
 				
@@ -162,7 +170,8 @@ class Cron {
 	
 	static loopCreateMonthlyWeather () {
  
-		new CronJob('00 00 01 02 * *', function() { 
+		// every 5th day of month at 03:00
+		new CronJob('00 00 03 05 * *', function() { 
 		//new CronJob('*/50 * * * * *', function() {
 
 			console.log('Start loopCreateMonthlyWeather at: ' + new Date());
@@ -207,16 +216,20 @@ class Cron {
 
 					inputMonth = inputMonth - 2;
 
+					// Fix month. If want Apr, enter 3
+					//inputMonth = 3;
+
+					let jsonObjDtl = null;
+
 					if(!lastYearFlag){
-						var jsonObjDtl = data_json[inputMonth];
+						jsonObjDtl = data_json[inputMonth];
 						inputMonth = inputMonth + 1;
 					}else{
-						var jsonObjDtl = data_json[11];
+						jsonObjDtl = data_json[11];
 						inputMonth = 12;
 					}
-
+					
 					if( jsonObjDtl[Constants.MONTH] === inputMonth || lastYearFlag){
-						
 						var jsonObjDtlDay = jsonObjDtl[Constants.DAYDATA];
 						for (var key in jsonObjDtlDay) {              
 							if (jsonObjDtlDay.hasOwnProperty(key)) {
@@ -261,7 +274,9 @@ class Cron {
 										cloud: inputCloud,
 										rainfall: inputRainfall,
 										sunshine: inputSunshine
-										};
+									};
+									
+									// console.log('inputWeather: '+JSON.stringify(inputWeather));
 
 									var body = JSON.stringify(inputWeather);
 
@@ -279,11 +294,11 @@ class Cron {
 									request.end(body);
 									request.on('response', function (response) {
 										console.log('STATUS: ' + response.statusCode);
-										console.log('END loopCreateMonthlyWeather at: ' + new Date());
+										// console.log('END loopCreateMonthlyWeather at: ' + new Date());
 									});
 								}
 							}
-						};
+						}
 					}
 					
 				});
@@ -414,7 +429,7 @@ class Cron {
 										}
 		
 									}
-								};
+								}
 							}
 						}
 					});
@@ -434,7 +449,7 @@ class Cron {
 
         }, null, true, Sconfig.TIME_ZONE);
 
-    };
+    }
 
 }
 

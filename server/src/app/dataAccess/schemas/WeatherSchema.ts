@@ -4,14 +4,14 @@
 
 import DataAccess = require('../DataAccess');
 import IWeatherModel = require("./../../model/interfaces/IWeatherModel");
+import Mongoose = require('mongoose');
 
-var mongoose = DataAccess.mongooseInstance;
 var mongooseConnection = DataAccess.mongooseConnection;
 
 class WeatherSchema {
 
     static get schema () {
-        var schema =  mongoose.Schema({
+        var schema = new Mongoose.Schema({
             year : {
                 type: Number,
                 required: true

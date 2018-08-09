@@ -5,6 +5,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { SettingComponent } from './components/setting/setting.component';
 import { WeatherForecastComponent } from './components/weatherForecast/weatherForecast.component';
+import { WeeklyPredictComponent } from './components/weeklyPredict/weeklyPredict.component';
 import { CalculateWeatherComponent } from './components/calculateWeather/calculateWeather.component';
 
 const appRoutes: Routes = [
@@ -36,6 +37,10 @@ const appRoutes: Routes = [
   {
     path: 'weatherForecast',
     component: WeatherForecastComponent
+  },
+  {
+    path: 'weeklyPredict',
+    component: WeeklyPredictComponent
   }
 ];
 
